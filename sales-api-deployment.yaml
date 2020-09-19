@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: sales-api
+  name: sales-api
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        io.kompose.service: sales-api
+    spec:
+      containers:
+      - env:
+        - name: CUSTOMER_API_URI
+          value: http://customer-api
+        image: cijosunny/sales-api-k8s:0.0.1-SNAPSHOT
+        name: sales-api
+        ports:
+        - containerPort: 9091
+      restartPolicy: Always

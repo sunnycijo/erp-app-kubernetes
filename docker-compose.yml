@@ -1,0 +1,56 @@
+version: '3.7'
+services:
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - "3308:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_DATABASE: customer
+    volumes:
+      - customerdbvolume:/var/lib/mysql
+    networks:
+      - kub-micro-mysql-network
+      
+  customer-api:
+    image: cijosunny/customer-api-k8s:0.0.1-SNAPSHOT
+    container_name: customer-api
+    ports:
+      - "8081:8081"
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      RDS_HOSTNAME: mysql
+      RDS_PORT: 3306
+      RDS_DB_NAME: customer
+      RDS_USERNAME: user
+      RDS_PASSWORD: user
+    networks:
+      - kub-micro-mysql-network
+      
+  sales-api:
+    image: cijosunny/sales-api-k8s:0.0.1-SNAPSHOT
+    container_name: sales-api
+    ports:
+      - "9091:9091"
+    restart: always
+    depends_on:
+      - customer-api
+    environment:
+      CUSTOMER_API_URI: http://customer-api
+    networks:
+      - kub-micro-mysql-network
+  
+# Networks to be created to facilitate communication between containers
+networks:
+  kub-micro-mysql-network:
+    name: kub-micro-mysql-network
+# Volumes
+volumes:
+  customerdbvolume:

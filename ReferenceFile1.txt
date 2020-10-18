@@ -1,0 +1,79 @@
+Cluster
+	Master Node
+		API Server(kube api server)
+			Google cloud console and kubectl talks to kubernetes cluster is through API server 
+		Distributed database(etcd)
+			All the below details are stored in this distributed database
+				All configuration changes that we are making
+				All deployments that we are creating
+				All the scaling operations that we are performing
+			We are setting desired state
+				5 instances of application A, 10 instances of application B
+			3-5 replicas of this distributed database so the kubernetes cluster state is not lost
+		Scheduler (kube scheduler)
+			Responsible for scheduling pods on to the nodes
+			to which node a pod should go
+			based on how much memory available, how much CPU, are there any port conflicts
+		Controller manager(kube controller manager)
+			Controls over all health of the Cluster
+	Worker Node
+		All application will be scheduled to run on worker nodes
+		Node Agent
+			Also called kubelet
+			Responsible for tracking what happens in the node and communicate it to master node
+			If a pod goes down, the kubelet will report it back to controller manager
+		Networking Component
+			Also called kube proxy
+			Creating a deployment and exposing it through service is possible through networking component
+		Container runtime
+			docker or any OCI(Open Container Interface) where image runs
+		PODS
+			In a single node there can be several pods 
+
+Node
+Pod
+	Pod is a set of wrappers for containers
+	A pod can have multiple containers
+	A pod has an IP address, labels and annotations etc
+Replicaset
+	Ensures a specific number of pods are always running
+	A replicaset will be always tied with a specific release version
+Deployment
+	A release upgrade happens with out a hitch
+	deployment strategy - 
+		A release with 50% traffic to version 1 and 50% traffic to version 2
+		A rolling update - default deployment strategy
+Service
+	Service helps to provide the load balancer, which gives permanent IP address
+	A load balancer will be created
+	
+single responsibility principle
+
+kubernetes node
+	-pod1
+		-container1
+		-container2
+	-pod2
+		-container1
+		-container2
+		
+kubectl is a cloud neutral way of interacting with Kubernetes Clusters
+
+Google Cloud
+	Has Regions and Zones
+	Latency - nearer to the user
+	Availability - natural calamity, data storage restrictions
+
+
+To deploy application from terminal we need two applications
+ - GCloud
+	Search install gcloud from google
+		install by refering
+	gcloud auth login 
+		opens a browser enter username and password
+	which project to use
+		select the specific project
+ - Kubectl
+	Search install kubectl from google
+		install by refering
+	

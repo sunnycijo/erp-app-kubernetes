@@ -1,0 +1,53 @@
+kubectl version
+
+kubectl create deployment hello-world-rest-api --image=cijosunny/hello-world-rest-api:0.0.1.SNAPSHOT
+-creates deployment, replicaset, pod
+
+kubectl expose deployment hello-world-rest-api --type=LoadBalancer --port=8080
+-creates service
+
+kubectl scale deployment hello-world-rest-api --replicas=3 
+
+kubectl delete pod hello-world-rest-api-58ff5dd898-6219d
+
+kubectl autoscale deployment hello-world-rest-api --max=10 --cpu-percent=70
+
+kubectl edit deployment hello-world-rest-api
+
+kubectl get events
+
+kubectl get pods
+kubectl get pods -o wide
+kubectl explain pods
+
+kubectl get replicaset
+kubectl get rs
+kubectl get rs -o wide
+
+kubectl get deployment
+
+kubectl get service
+
+kubectl set image deployment hello-world-rest-api hello-world-rest-api=cijosunny/hello-world-rest-api:0.0.2.SNAPSHOT
+creates 2 replicasets 
+1 with old image cijosunny/hello-world-rest-api:0.0.1.SNAPSHOT
+1 with new image cijosunny/hello-world-rest-api:0.0.2.SNAPSHOT
+
+kubectl get componentstatuses
+Prints health status of  master nodes
+	- etcd-0
+	- controller-manager
+	- scheduler
+	- etcd-1
+	
+
+kubectl set image deployment hello-world-rest-api hello-world-rest-api=cijosunny/hello-world-rest-api:0.0.2.SNAPSHOT
+
+kubectl get deployment hello-world-rest-api -o yaml > deployment.yaml
+kubectl get service hello-world-rest-api -o yaml > service.yaml
+
+kubectl apply -f deployment.yaml
+
+Combine both deployment.yaml and service.yaml into same file
+
+kubectl delete all -l app=hello-world-rest-api
